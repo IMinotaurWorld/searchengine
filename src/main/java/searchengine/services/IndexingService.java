@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import searchengine.config.Site;
 import searchengine.config.SitesList;
 import searchengine.dto.statistics.IndexingResponse;
+import searchengine.exception.IndexingException;
 import searchengine.model.Index;
 import searchengine.model.Lemma;
 import searchengine.model.Page;
@@ -20,8 +21,6 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +43,9 @@ public class IndexingService {
                 siteIndexer.indexAllSites();
             }catch(Exception e){
                 indexing = false;
-                throw new RuntimeException("Индексация прервана!");
+                IndexingException exception = new IndexingException();
+                exception.message = "Индексация прервана!";
+                throw exception;
             }
         });
 
@@ -76,7 +77,9 @@ public class IndexingService {
         try{
             html = Jsoup.connect(url).get().html();
         }catch(IOException e){
-            return new IndexingResponse(false, "Ошибка при загрузке страницы!");
+            IndexingException exception = new IndexingException();
+            exception.message = "Ошибка при загрузке страницы!";
+            throw exception;
         }
         Page newPage = new Page();
         newPage.setPath(url);

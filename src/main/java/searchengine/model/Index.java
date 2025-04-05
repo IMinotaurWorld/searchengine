@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "index_")
+@Table(name = "index")
 public class Index {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

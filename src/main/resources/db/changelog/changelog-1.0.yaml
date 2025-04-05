@@ -1,0 +1,121 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: user
+      changes:
+        - createTable:
+            tableName: index
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: page_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    references: page(id)
+              - column:
+                  name: lemma_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    references: lemma(id)
+              - column:
+                  name: rank_
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: lemma
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: site_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    references: site(id)
+              - column:
+                  name: lemma
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: frequency
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: page
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: site_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    references: site(id)
+              - column:
+                  name: path
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: code
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: text
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: site
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: status
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status_time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_error
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: url
+                  type: text
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: text
+                  constraints:
+                    nullable: false

@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import searchengine.exception.LemmatizerException;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,7 +25,9 @@ public class Lemmatizer {
             this.morphology = new RussianLuceneMorphology();
         }catch(IOException e){
             logger.error(e.getLocalizedMessage());
-            throw new RuntimeException("Не удалось инициализировать лемматизатор!");
+            LemmatizerException exception = new LemmatizerException();
+            exception.message = "Не удалось инициализировать лемматизатор!";
+            throw exception;
         }
     }
 

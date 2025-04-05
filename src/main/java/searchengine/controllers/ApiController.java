@@ -26,13 +26,13 @@ public class ApiController {
     private final SearchService searchService;
 
     @GetMapping("/statistics")
-    public ResponseEntity<StatisticsResponse> statistics() {
-        return ResponseEntity.ok(statisticsService.getStatistics());
+    public StatisticsResponse statistics() {
+        return statisticsService.getStatistics();
     }
 
     @GetMapping("/search")
-    public ResponseEntity<SearchResponse> search(@RequestParam String querry, @RequestParam(required = false) String site){
+    public SearchResponse search(@RequestParam String querry, @RequestParam(required = false) String site){
         SearchResponse response = searchService.search(querry, site);
-        return ResponseEntity.ok(response);
+        return response;
     }
 }
