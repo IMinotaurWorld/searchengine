@@ -5,7 +5,7 @@ import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 import searchengine.config.Site;
 import searchengine.config.SitesList;
-import searchengine.dto.statistics.IndexingResponse;
+import searchengine.dto.IndexingResponse;
 import searchengine.exception.IndexingException;
 import searchengine.model.Index;
 import searchengine.model.Lemma;

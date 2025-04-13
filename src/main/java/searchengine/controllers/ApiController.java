@@ -1,17 +1,12 @@
 package searchengine.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import searchengine.config.Site;
-import searchengine.config.SitesList;
-import searchengine.dto.statistics.IndexingResponse;
-import searchengine.dto.statistics.SearchResponse;
+import searchengine.dto.SearchResponse;
 import searchengine.dto.statistics.StatisticsResponse;
-import searchengine.services.IndexingService;
 import searchengine.services.SearchService;
 import searchengine.services.StatisticsService;
 
@@ -21,8 +16,6 @@ import searchengine.services.StatisticsService;
 public class ApiController {
 
     private final StatisticsService statisticsService;
-    private final SitesList sitesList;
-    private final IndexingService indexingService;
     private final SearchService searchService;
 
     @GetMapping("/statistics")

@@ -3,7 +3,7 @@ package searchengine.exception;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import searchengine.dto.statistics.IndexingResponse;
+import searchengine.dto.IndexingResponse;
 
 import java.util.Optional;
 
