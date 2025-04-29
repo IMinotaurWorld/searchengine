@@ -4,7 +4,7 @@ databaseChangeLog:
       author: user
       changes:
         - createTable:
-            tableName: index
+            tableName: site
             columns:
               - column:
                   name: id
@@ -13,20 +13,29 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
               - column:
-                  name: page_id
-                  type: bigint
+                  name: status
+                  type: text
                   constraints:
                     nullable: false
-                    references: page(id)
               - column:
-                  name: lemma_id
-                  type: bigint
+                  name: status_time
+                  type: timestamp
                   constraints:
                     nullable: false
-                    references: lemma(id)
               - column:
-                  name: rank_
-                  type: bigint
+                  name: last_error
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: url
+                  type: text
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: text
                   constraints:
                     nullable: false
         - createTable:
@@ -85,7 +94,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - createTable:
-            tableName: site
+            tableName: index
             columns:
               - column:
                   name: id
@@ -94,28 +103,26 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
               - column:
-                  name: status
-                  type: text
+                  name: page_id
+                  type: bigint
                   constraints:
                     nullable: false
+                    references: page(id)
               - column:
-                  name: status_time
-                  type: timestamp
+                  name: lemma_id
+                  type: bigint
                   constraints:
                     nullable: false
+                    references: lemma(id)
               - column:
-                  name: last_error
-                  type: text
+                  name: rank_
+                  type: bigint
                   constraints:
                     nullable: false
+        - createIndex:
+            tableName: page
+            indexName: pathIndex
+            columns:
               - column:
-                  name: url
-                  type: text
-                  constraints:
-                    nullable: false
-                    unique: true
-              - column:
-                  name: name
-                  type: text
-                  constraints:
-                    nullable: false
+                  name: path
+                  type: varchar(255)

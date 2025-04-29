@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    username: user1
+    username: postgres
     password: 355037
-    url: jdbc:postgresql://localhost:5434/mydatabase?useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:postgresql://localhost:5432/searchengine?useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     enabled: true

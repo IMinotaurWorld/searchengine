@@ -24,8 +24,8 @@ public class ApiController {
     }
 
     @GetMapping("/search")
-    public SearchResponse search(@RequestParam String querry, @RequestParam(required = false) String site){
-        SearchResponse response = searchService.search(querry, site);
+    public SearchResponse search(@RequestParam String query, @RequestParam(required = false) String site){
+        SearchResponse response = searchService.search(query, site);
         return response;
     }
 }
