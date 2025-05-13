@@ -38,6 +38,10 @@ databaseChangeLog:
                   type: text
                   constraints:
                     nullable: false
+  - changeSet:
+      id: 2
+      author: user
+      changes:
         - createTable:
             tableName: lemma
             columns:
@@ -51,6 +55,7 @@ databaseChangeLog:
                   name: site_id
                   type: bigint
                   constraints:
+                    foreignKeyName: fk_site
                     nullable: false
                     references: site(id)
               - column:
@@ -63,6 +68,10 @@ databaseChangeLog:
                   type: bigint
                   constraints:
                     nullable: false
+  - changeSet:
+      id: 3
+      author: user
+      changes:
         - createTable:
             tableName: page
             columns:
@@ -76,6 +85,7 @@ databaseChangeLog:
                   name: site_id
                   type: bigint
                   constraints:
+                    foreignKeyName: fk_site
                     nullable: false
                     references: site(id)
               - column:
@@ -93,6 +103,10 @@ databaseChangeLog:
                   type: text
                   constraints:
                     nullable: false
+  - changeSet:
+      id: 4
+      author: user
+      changes:
         - createTable:
             tableName: index
             columns:
@@ -106,12 +120,14 @@ databaseChangeLog:
                   name: page_id
                   type: bigint
                   constraints:
+                    foreignKeyName: fk_page
                     nullable: false
                     references: page(id)
               - column:
                   name: lemma_id
                   type: bigint
                   constraints:
+                    foreignKeyName: fk_lemma
                     nullable: false
                     references: lemma(id)
               - column:
@@ -119,6 +135,10 @@ databaseChangeLog:
                   type: bigint
                   constraints:
                     nullable: false
+  - changeSet:
+      id: 5
+      author: user
+      changes:
         - createIndex:
             tableName: page
             indexName: pathIndex
