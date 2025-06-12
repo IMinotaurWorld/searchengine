@@ -12,9 +12,14 @@ import java.util.Set;
 
 @Repository
 public interface PageRepository extends JpaRepository<Page, Integer> {
-    @Query("DELETE FROM Page p WHERE p.site = :site")
-    void deleteBySite(@Param("site") Site site);
+//    @Query("DELETE FROM Page p WHERE p.site = :site")
+//    void deleteBySite(@Param("site") Site site);
 
     Page findByPathAndSite(String url, Site site);
-    Set<Page> findByLemma(Lemma lemma);
+
+
+    @Query("SELECT p FROM Page p JOIN Index i ON p = i.page WHERE i.lemma = :lemma")
+    Set<Page> findByLemma(@Param("lemma") Lemma lemma);
+
+    long countBySite(Site site);
 }

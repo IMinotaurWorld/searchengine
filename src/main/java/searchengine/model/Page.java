@@ -5,26 +5,30 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.persistence.Index;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@Table(name = "page", indexes = @Index(name = "pathIndex", columnList = "path", unique = true))
+@Table(name = "page", indexes = @Index(name = "idx_page_path", columnList = "path", unique = true))
+@Getter @Setter
 public class Page {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "site_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "site_id", nullable = false, foreignKey = @ForeignKey(name = "fk_page_site"))
     private Site site;
 
-    @Column(name = "path", columnDefinition = "VARCHAR(255)", nullable = false)
+    @Column(nullable = false, length = 511)
     private String path;
 
-    @Column(name = "code", nullable = false)
+    @Column(nullable = false)
     private Integer code;
 
-    @Column(name = "content", columnDefinition = "MEDIUMTEXT", nullable = false)
+    @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
     private String content;
+
+    @OneToMany(mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<searchengine.model.Index> indices = new ArrayList<>();
 }

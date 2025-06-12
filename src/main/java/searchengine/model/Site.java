@@ -5,30 +5,36 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Getter
-@Setter
 @Table(name = "site")
+@Getter @Setter
 public class Site {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    private Long id;
 
-    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Status status;
 
     @Column(name = "status_time", nullable = false)
-    private LocalDateTime status_time;
+    private LocalDateTime statusTime;
 
     @Column(name = "last_error", columnDefinition = "TEXT")
-    private String last_error;
+    private String lastError;
 
-    @Column(name = "url", unique = true, nullable = false)
+    @Column(nullable = false, unique = true, length = 511)
     private String url;
 
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false, length = 255)
     private String name;
+
+    @OneToMany(mappedBy = "site", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Page> pages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "site", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Lemma> lemmas = new ArrayList<>();
 }

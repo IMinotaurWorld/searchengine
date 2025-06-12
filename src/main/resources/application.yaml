@@ -1,23 +1,29 @@
 server:
-  port: 8080
+  port: 8000
 
 spring:
   datasource:
-    username: postgres
-    password: 355037
-    url: jdbc:postgresql://localhost:5432/searchengine?useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true
+    username: sa
+    password:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    driver-class-name: org.h2.Driver
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     enabled: true
-    #context
-    #parameters
   jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-    hibernate:
-      ddl-auto: create
-    show-sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
 indexing-settings:
   sites:
@@ -27,3 +33,34 @@ indexing-settings:
       name: Skillbox
     - url: https://www.playback.ru
       name: PlayBack.Ru
+
+#server:
+#  port: 8080
+#
+#spring:
+#  datasource:
+#    username: user1
+#    password: 355057
+#    url: jdbc:postgresql://localhost:5434/mydatabase?useSSL=false
+#  liquibase:
+#    change-log: classpath:db/changelog/db.changelog-master.yaml
+#    enabled: true
+#  jpa:
+#    hibernate:
+#      ddl-auto: validate
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        jdbc:
+#          lob:
+#            non_contextual_creation: true
+#
+#indexing-settings:
+#  sites:
+#    - url: https://www.lenta.ru
+#      name: Лента.ру
+#    - url: https://www.skillbox.ru
+#      name: Skillbox
+#    - url: https://www.playback.ru
+#      name: PlayBack.Ru

@@ -11,4 +11,6 @@ import java.util.List;
 public interface LemmaRepository extends JpaRepository<Lemma, Integer> {
     Lemma findByLemmaAndSite(String lemma, Site site);
     List<Lemma> findByLemma(String lemma);
+
+    long countBySite(Site site);
 }

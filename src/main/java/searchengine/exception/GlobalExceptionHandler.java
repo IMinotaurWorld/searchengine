@@ -15,9 +15,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.of(Optional.of(response));
     }
 
-    @ExceptionHandler(IndexingException.class)
-    public ResponseEntity<RuntimeException> handleResourceNotFound(LemmatizerException e){
-        RuntimeException response = new RuntimeException(e.message);
-        return ResponseEntity.of(Optional.of(response));
-    }
+    //@ExceptionHandler(LemmatizerException.class)
+    //public ResponseEntity<RuntimeException> handleResourceNotFound(LemmatizerException e){
+    //    RuntimeException response = new RuntimeException(e.message);
+    //    return ResponseEntity.of(Optional.of(response));
+    //}
 }

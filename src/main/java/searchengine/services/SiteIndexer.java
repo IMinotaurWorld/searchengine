@@ -50,14 +50,14 @@ public class SiteIndexer {
     }
 
     @Transactional
-    private void indexSite(searchengine.config.Site configSite){
+    public void indexSite(searchengine.config.Site configSite){
         Site existingSite = siteRepository.findByUrl(configSite.getUrl());
         if(existingSite == null){
             Site newSite = new Site();
             newSite.setUrl(configSite.getUrl());
             newSite.setName(configSite.getName());
             newSite.setStatus(Status.INDEXING);
-            newSite.setStatus_time(LocalDateTime.now());
+            newSite.setStatusTime(LocalDateTime.now());
             siteRepository.save(newSite);
             ForkJoinPool.commonPool().invoke(new PageIndexer(newSite, configSite.getUrl(), new HashSet<>(), 0));
         }
@@ -91,7 +91,7 @@ public class SiteIndexer {
                 page.setCode(200);
                 page.setContent(doc.html());
                 pageRepository.save(page);
-                site.setStatus_time(LocalDateTime.now());
+                site.setStatusTime(LocalDateTime.now());
                 siteRepository.save(site);
                 Elements elements = doc.select("a[href]");
                 for(Element element : elements){

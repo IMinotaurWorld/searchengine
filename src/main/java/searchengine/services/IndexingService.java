@@ -65,7 +65,7 @@ public class IndexingService {
             site.setUrl(configSite.getUrl());
             site.setName(configSite.getName());
             site.setStatus(Status.INDEXING);
-            site.setStatus_time(LocalDateTime.now());
+            site.setStatusTime(LocalDateTime.now());
             siteRepository.save(site);
         }
         Page existingPage = pageRepository.findByPathAndSite(url, site);
@@ -105,7 +105,7 @@ public class IndexingService {
             Index index = new Index();
             index.setPage(newPage);
             index.setLemma(lemma);
-            index.setRank(lemma.getFrequency());
+            index.setRank(Float.valueOf(lemma.getFrequency()));
             indexRepository.save(index);
         }
         return new IndexingResponse(true);

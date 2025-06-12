@@ -1,9 +1,7 @@
 package searchengine.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import searchengine.dto.IndexingResponse;
 import searchengine.services.IndexingService;
 
@@ -21,5 +19,10 @@ public class IndexingController {
     @GetMapping("/stopIndexing")
     public IndexingResponse stopIndexing(){
         return indexingService.stopIndexing();
+    }
+
+    @PostMapping("/indexPage")
+    public IndexingResponse indexPage(@RequestParam String url) {
+        return indexingService.indexPage(url);
     }
 }

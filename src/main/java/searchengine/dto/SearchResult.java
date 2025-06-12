@@ -9,5 +9,5 @@ public class SearchResult {
     private String uri;
     private String title;
     private String snippet;
-    private Double relevant;
+    private Double relevance;
 }

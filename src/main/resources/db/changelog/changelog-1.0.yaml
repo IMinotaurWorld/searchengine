@@ -12,9 +12,10 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
+                    primaryKeyName: pk_site
               - column:
                   name: status
-                  type: text
+                  type: varchar(255)
                   constraints:
                     nullable: false
               - column:
@@ -25,21 +26,64 @@ databaseChangeLog:
               - column:
                   name: last_error
                   type: text
-                  constraints:
-                    nullable: false
               - column:
                   name: url
-                  type: text
+                  type: varchar(511)
                   constraints:
                     nullable: false
                     unique: true
               - column:
                   name: name
-                  type: text
+                  type: varchar(255)
                   constraints:
                     nullable: false
+
   - changeSet:
       id: 2
+      author: user
+      changes:
+        - createTable:
+            tableName: page
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_page
+              - column:
+                  name: site_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    references: site(id)
+                    foreignKeyName: fk_page_site
+              - column:
+                  name: path
+                  type: varchar(511)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: code
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: mediumtext
+                  constraints:
+                    nullable: false
+        - createIndex:
+            tableName: page
+            indexName: idx_page_path
+            unique: true
+            columns:
+              - column:
+                  name: path
+
+  - changeSet:
+      id: 3
       author: user
       changes:
         - createTable:
@@ -51,64 +95,40 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
+                    primaryKeyName: pk_lemma
               - column:
                   name: site_id
                   type: bigint
                   constraints:
-                    foreignKeyName: fk_site
                     nullable: false
                     references: site(id)
+                    foreignKeyName: fk_lemma_site
               - column:
                   name: lemma
-                  type: text
-                  constraints:
-                    nullable: false
-              - column:
-                  name: frequency
-                  type: bigint
-                  constraints:
-                    nullable: false
-  - changeSet:
-      id: 3
-      author: user
-      changes:
-        - createTable:
-            tableName: page
-            columns:
-              - column:
-                  name: id
-                  type: bigint
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-              - column:
-                  name: site_id
-                  type: bigint
-                  constraints:
-                    foreignKeyName: fk_site
-                    nullable: false
-                    references: site(id)
-              - column:
-                  name: path
                   type: varchar(255)
                   constraints:
                     nullable: false
               - column:
-                  name: code
-                  type: bigint
+                  name: frequency
+                  type: int
                   constraints:
                     nullable: false
+        - createIndex:
+            tableName: lemma
+            indexName: idx_lemma_site_lemma
+            unique: true
+            columns:
               - column:
-                  name: content
-                  type: text
-                  constraints:
-                    nullable: false
+                  name: site_id
+              - column:
+                  name: lemma
+
   - changeSet:
       id: 4
       author: user
       changes:
         - createTable:
-            tableName: index
+            tableName: search_index
             columns:
               - column:
                   name: id
@@ -116,33 +136,32 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
+                    primaryKeyName: pk_search_index
               - column:
                   name: page_id
                   type: bigint
                   constraints:
-                    foreignKeyName: fk_page
                     nullable: false
                     references: page(id)
+                    foreignKeyName: fk_index_page
               - column:
                   name: lemma_id
                   type: bigint
                   constraints:
-                    foreignKeyName: fk_lemma
                     nullable: false
                     references: lemma(id)
+                    foreignKeyName: fk_index_lemma
               - column:
                   name: rank_
-                  type: bigint
+                  type: float
                   constraints:
                     nullable: false
-  - changeSet:
-      id: 5
-      author: user
-      changes:
         - createIndex:
-            tableName: page
-            indexName: pathIndex
+            tableName: search_index
+            indexName: idx_index_page_lemma
+            unique: true
             columns:
               - column:
-                  name: path
-                  type: varchar(255)
+                  name: page_id
+              - column:
+                  name: lemma_id
