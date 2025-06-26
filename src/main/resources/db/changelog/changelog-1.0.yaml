@@ -8,21 +8,16 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
-                  autoIncrement: true
+                  type: bigserial
                   constraints:
                     primaryKey: true
                     primaryKeyName: pk_site
               - column:
                   name: status
                   type: varchar(255)
-                  constraints:
-                    nullable: false
               - column:
                   name: status_time
                   type: timestamp
-                  constraints:
-                    nullable: false
               - column:
                   name: last_error
                   type: text
@@ -47,8 +42,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
-                  autoIncrement: true
+                  type: bigserial
                   constraints:
                     primaryKey: true
                     primaryKeyName: pk_page
@@ -59,6 +53,7 @@ databaseChangeLog:
                     nullable: false
                     references: site(id)
                     foreignKeyName: fk_page_site
+                    deleteCascade: true
               - column:
                   name: path
                   type: varchar(511)
@@ -66,12 +61,12 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: code
-                  type: int
+                  type: integer
                   constraints:
                     nullable: false
               - column:
                   name: content
-                  type: mediumtext
+                  type: text
                   constraints:
                     nullable: false
         - createIndex:
@@ -91,8 +86,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
-                  autoIncrement: true
+                  type: bigserial
                   constraints:
                     primaryKey: true
                     primaryKeyName: pk_lemma
@@ -103,6 +97,7 @@ databaseChangeLog:
                     nullable: false
                     references: site(id)
                     foreignKeyName: fk_lemma_site
+                    deleteCascade: true
               - column:
                   name: lemma
                   type: varchar(255)
@@ -110,7 +105,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: frequency
-                  type: int
+                  type: integer
                   constraints:
                     nullable: false
         - createIndex:
@@ -132,8 +127,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
-                  autoIncrement: true
+                  type: bigserial
                   constraints:
                     primaryKey: true
                     primaryKeyName: pk_search_index
@@ -144,6 +138,7 @@ databaseChangeLog:
                     nullable: false
                     references: page(id)
                     foreignKeyName: fk_index_page
+                    deleteCascade: true
               - column:
                   name: lemma_id
                   type: bigint
@@ -151,6 +146,7 @@ databaseChangeLog:
                     nullable: false
                     references: lemma(id)
                     foreignKeyName: fk_index_lemma
+                    deleteCascade: true
               - column:
                   name: rank_
                   type: float

@@ -42,7 +42,6 @@ public class Lemmatizer {
         String lowerCaseText = text.toLowerCase();
         String[] words = lowerCaseText.split("\\s+");
         for(String word : words){
-            //if(word.isEmpty()) continue;
             if(!word.matches("[а-яё]+")) continue;
             List<String> morphInfo = morphology.getMorphInfo(word);
             for(String info : morphInfo){

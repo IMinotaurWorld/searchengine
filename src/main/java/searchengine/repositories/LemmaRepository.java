@@ -1,6 +1,8 @@
 package searchengine.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import searchengine.model.Lemma;
 import searchengine.model.Site;
@@ -13,4 +15,8 @@ public interface LemmaRepository extends JpaRepository<Lemma, Integer> {
     List<Lemma> findByLemma(String lemma);
 
     long countBySite(Site site);
+
+    @Modifying
+    @Query("DELETE FROM Lemma l WHERE l.site = :site")
+    void deleteBySite(Site site);
 }

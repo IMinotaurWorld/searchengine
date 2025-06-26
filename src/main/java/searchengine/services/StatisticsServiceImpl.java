@@ -28,7 +28,6 @@ public class StatisticsServiceImpl implements StatisticsService {
         TotalStatistics total = new TotalStatistics();
         List<DetailedStatisticsItem> detailed = new ArrayList<>();
 
-        // Реальные данные вместо заглушек
         List<searchengine.model.Site> sites = siteRepository.findAll();
         total.setSites(sites.size());
         total.setIndexing(sites.stream().anyMatch(s -> s.getStatus() == Status.INDEXING));

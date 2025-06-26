@@ -17,19 +17,16 @@ public class Site {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Status status;
 
-    @Column(name = "status_time", nullable = false)
+    @Column(name = "status_time")
     private LocalDateTime statusTime;
 
     @Column(name = "last_error", columnDefinition = "TEXT")
     private String lastError;
 
-    @Column(nullable = false, unique = true, length = 511)
     private String url;
 
-    @Column(nullable = false, length = 255)
     private String name;
 
     @OneToMany(mappedBy = "site", cascade = CascadeType.ALL, orphanRemoval = true)
