@@ -8,17 +8,14 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import searchengine.config.SitesList;
-import searchengine.model.Page;
-import searchengine.model.Site;
-import searchengine.model.Status;
+import searchengine.model.*;
+import searchengine.repositories.IndexRepository;
+import searchengine.repositories.LemmaRepository;
 import searchengine.repositories.PageRepository;
 import searchengine.repositories.SiteRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -33,6 +30,9 @@ public class SiteIndexer {
     private final SitesList sitesList;
     private final SiteRepository siteRepository;
     private final PageRepository pageRepository;
+    private final LemmaRepository lemmaRepository;
+    private final IndexRepository indexRepository;
+    private final Lemmatizer lemmatizer;
 
     public synchronized void startIndexing() {
         if (isIndexing.get()) {
@@ -166,6 +166,32 @@ public class SiteIndexer {
                     pageRepository.save(page);
                 }
 
+                // Лемматизация после сохранения страницы
+                String cleanHtml = lemmatizer.cleanHtml(doc.html());
+                Map<String, Integer> lemmaCounts = lemmatizer.lemmatizeText(cleanHtml);
+
+                for (Map.Entry<String, Integer> entry : lemmaCounts.entrySet()) {
+                    String lemmaText = entry.getKey();
+                    int frequency = entry.getValue();
+
+                    Lemma lemma = lemmaRepository.findByLemmaAndSite(lemmaText, site);
+                    if (lemma == null) {
+                        lemma = new Lemma();
+                        lemma.setLemma(lemmaText);
+                        lemma.setSite(site);
+                        lemma.setFrequency(1);
+                    } else {
+                        lemma.setFrequency(lemma.getFrequency() + 1);
+                    }
+                    lemmaRepository.save(lemma);
+
+                    Index index = new Index();
+                    index.setPage(page);
+                    index.setLemma(lemma);
+                    index.setRank((float) frequency);
+                    indexRepository.save(index);
+                }
+
                 synchronized (siteRepository) {
                     site.setStatusTime(LocalDateTime.now());
                     siteRepository.save(site);
@@ -200,6 +226,7 @@ public class SiteIndexer {
                 }
             }
         }
+
 
         private boolean shouldIndex(String url) {
             return url != null &&
